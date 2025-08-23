@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@theme {
+  /* User's requested colors */
+  --color-primary: #3ecf8e;
+  --color-background: #121212;
+  --color-foreground: #ffffff;
+  
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-card);
+}
+
+::-webkit-scrollbar-thumb {
+  /* background: var(--color-border); */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
+/* Selection and focus styles */
+::selection {
+  background-color: rgba(62, 207, 142, 0.3);
+  color: var(--color-foreground);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
