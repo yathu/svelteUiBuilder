@@ -31,11 +31,6 @@
 	}
 
 	const previewContent = $derived.by(() => createPreviewHtml($generatedCode));
-
-	const code = `<div class="mx-auto max-w-sm rounded-xl bg-gray-50 p-6 text-center shadow-md">
-									<h2 class="mb-2 text-xl font-bold">Card Title</h2>
-									<p class="text-gray-600">This is a simple card made with Tailwind CSS. It's clean, minimal, and fully responsive.</p>
-								</div>`;
 </script>
 
 <svelte:head>
@@ -44,9 +39,23 @@
 
 <div class="flex h-full flex-col overflow-hidden">
 	<!-- Code Panel -->
-	<div class="border-b border-gray-500 p-2 w-full overflow-auto overflow-x-scroll font-mono text-sm text-white">
+	<div
+		class="w-full overflow-auto overflow-x-scroll border-b border-gray-500 p-2 font-mono text-sm text-white"
+	>
 		<HighlightAuto class="h-full" code={$generatedCode} />
 	</div>
+
+		<div class="flex ps-2.5 items-center justify-start gap-4 py-2">
+			<!-- svelte-ignore a11y_consider_explicit_label -->
+			<button class="px-2 py-1 bg-neutral-800 text-gray-500 cursor-pointer rounded hover:bg-gray-300" disabled>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left-icon lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
+			</button>
+			<span class="font-semibold">V.1</span>
+			<!-- svelte-ignore a11y_consider_explicit_label -->
+			<button class="px-2 py-1 bg-neutral-800 text-gray-500 cursor-pointer rounded hover:bg-gray-300" disabled>
+				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right-icon lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
+			</button>
+		</div>
 
 	<!-- Preview Panel -->
 	<div class="flex-1">

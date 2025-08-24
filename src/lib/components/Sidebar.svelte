@@ -57,7 +57,7 @@
         </button>
         
         <button 
-          class="flex items-center gap-2 px-3 py-2 bg-gray-700 flex-1 text-white justify-center cursor-pointer rounded transition-colors"
+          class="flex items-cente text-sm gap-2 px-3 py-2 bg-gray-700 flex-1 text-white justify-center cursor-pointer rounded transition-colors"
           onclick={newChat}
           aria-label="Start new chat"
         >

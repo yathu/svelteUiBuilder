@@ -51,13 +51,3 @@ body {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
-.chat-content a {
-  @apply text-green-500;
-}
-
-.chat-content code {
-  /* color: #ccc !important;  */
-  /* background-color: #333 !important;
-  padding: 2px 4px;
-  border-radius: 4px; */
-}
