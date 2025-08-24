@@ -1,13 +1,24 @@
 <script>
-  import { sidebarOpen, showWelcomeScreen, activeChat } from '../lib/stores.js';
+  import { sidebarOpen, showWelcomeScreen, activeChat, chats } from '../lib/stores.js';
   import Sidebar from '../lib/components/Sidebar.svelte';
   import ChatArea from '../lib/components/ChatArea.svelte';
   import PreviewArea from '../lib/components/PreviewArea.svelte';
   import WelcomeScreen from '../lib/components/WelcomeScreen.svelte';
+	import { onMount } from 'svelte';
   
   function toggleSidebar() {
     sidebarOpen.update(n => !n);
   }
+
+  // let chats = $state("initdata");
+
+  	onMount(async ()=>{
+	  await fetch("https://jsonplaceholder.typicode.com/posts/1").then(res => res.json()).then(data=> {
+	    console.log("apidata =>",data);
+      chats.set(data?.data);
+	  })
+	})
+  
 </script>
 
 <div class="flex h-screen bg-background">

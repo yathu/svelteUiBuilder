@@ -1,9 +1,7 @@
 <script>
-	import { onMount } from 'svelte';
 	import { messages } from '../stores.js';
 
 	let messageInput = $state('');
-	let response = $state('console.log("ccc")');
 
 	function sendMessage() {
 		if (messageInput.trim()) {
@@ -33,23 +31,9 @@
 			sendMessage();
 		}
 	}
-
-	onMount(async ()=>{
-	  fetch("https://jsonplaceholder.typicode.com/posts/1").then(res => res.json()).then(data=> {
-	    console.log("apidata=>",data);
-	    response = data;
-	  })
-	})
 </script>
 
 <div class="flex h-full flex-col">
-	<div class="bg-gray-600 text-white">
-		APIRES
-		<pre>
-      {response?.body}
-    </pre>
-	</div>
-
 	<!-- Messages -->
 	<div class="flex-1 space-y-4 overflow-y-auto p-4">
 		{#each $messages as message}
