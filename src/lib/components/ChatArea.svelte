@@ -1,31 +1,32 @@
-<script>
-	import { messages } from '../stores.js';
+<script lang="ts">
+	import type { ChatItem, Conversation } from '../../constants/storeTypes.js';
+	import { activeConversation, activeChatID, chats, messages } from '../stores.js';
 
 	let messageInput = $state('');
 
 	function sendMessage() {
 		if (messageInput.trim()) {
-			messages.update((msgs) => [
-				...msgs,
-				{ id: Date.now(), type: 'user', content: messageInput.trim() }
-			]);
+			// messages.update((msgs) => [
+			// 	...msgs,
+			// 	{ id: Date.now(), type: 'user', content: messageInput.trim() }
+			// ]);
 			messageInput = '';
 
-			// Simulate assistant response
-			setTimeout(() => {
-				messages.update((msgs) => [
-					...msgs,
-					{
-						id: Date.now() + 1,
-						type: 'assistant',
-						content: 'I understand your request. Let me help you with that.'
-					}
-				]);
-			}, 1000);
+			// // Simulate assistant response
+			// setTimeout(() => {
+			// 	messages.update((msgs) => [
+			// 		...msgs,
+			// 		{
+			// 			id: Date.now() + 1,
+			// 			type: 'assistant',
+			// 			content: 'I understand your request. Let me help you with that.'
+			// 		}
+			// 	]);
+			// }, 1000);
 		}
 	}
 
-	function handleKeydown(event) {
+	function handleKeydown(event: any) {
 		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();
 			sendMessage();
@@ -36,16 +37,20 @@
 <div class="flex h-full flex-col">
 	<!-- Messages -->
 	<div class="flex-1 space-y-4 overflow-y-auto p-4">
-		{#each $messages as message}
-			<div class="flex {message.type === 'user' ? 'justify-end' : 'justify-start'}">
+		{#each $activeConversation ?? [] as conversation}
+			<div class="flex {conversation.role === 'user' ? 'justify-end' : 'justify-start'}">
 				<!-- Updated user message color to use teal primary color -->
-				<div
-					class="max-w-xs rounded-lg px-4 py-2 lg:max-w-md {message.type === 'user'
-						? 'bg-[#00B6B4] text-white'
-						: 'bg-gray-100 text-gray-900'}"
+				<article
+					class="prose chat-content rounded-lg px-4 py-2 {conversation.role === 'user'
+						? 'bg-neutral-800 !text-white max-w-xs lg:max-w-md'
+						: ' !text-white'}"
 				>
-					{message.content}
-				</div>
+				{@html conversation.content.message}
+
+					<!-- <article class="prose lg:prose-xl">
+						{@html conversation.content.message}
+					</article> -->
+				</article>
 			</div>
 		{/each}
 	</div>
@@ -64,3 +69,8 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	
+	
+</style>

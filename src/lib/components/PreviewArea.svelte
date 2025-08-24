@@ -19,15 +19,19 @@
   const previewContent = $derived.by(() => createPreviewHtml($generatedCode));
 </script>
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full overflow-hidden">
   <!-- Code Panel -->
-  <div class="flex-1 border-b border-gray-500">
+  <div class="flex-1 border-b border-gray-500 overflow-scroll">
     <div class="h-full flex flex-col">
       <div class="px-4 py-2 bg-white/5 border-b border-gray-500">
         <h3 class="text-sm font-medium">Generated Code</h3>
       </div>
-      <div class="flex-1 overflow-auto">
-        <pre class="p-4 text-sm font-mono h-full"><code>{$generatedCode}</code></pre>
+      <div class="flex-1 overflow-auto lg:prose-lg text-sm font-mono h-full w-full text-white">
+        
+          <pre class="w-full h-full max-w-full" style="">
+            <code class="text-white font-mono">{$generatedCode}</code>
+          </pre>
+        
       </div>
     </div>
   </div>

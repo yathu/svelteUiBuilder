@@ -1,13 +1,13 @@
-<script>
-  import { sidebarOpen, settingsOpen, chats, activeChat, showWelcomeScreen } from '../stores.js';
+<script lang="ts">
+  import { sidebarOpen, settingsOpen, chats, activeChatID, showWelcomeScreen } from '../stores.js';
   import Settings from './Settings.svelte';
 
   function toggleSettings() {
     settingsOpen.update(n => !n);
   }
 
-  function selectChat(chatId) {
-    activeChat.set(chatId);
+  function selectChat(chatId:number) {
+    activeChatID.set(chatId);
     showWelcomeScreen.set(false);
     chats.update(chatList => 
       chatList.map(chat => ({
@@ -18,7 +18,7 @@
   }
 
   function newChat() {
-    activeChat.set(null);
+    activeChatID.set(null);
     showWelcomeScreen.set(true);
     chats.update(chatList => 
       chatList.map(chat => ({
@@ -39,7 +39,7 @@
 {/if}
 
 <!-- Sidebar -->
-<div class="fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 {$sidebarOpen ? 'translate-x-0' : '-translate-x-full'}" role="navigation">
+<div class="fixed inset-y-0 left-0 z-50 w-64 min-w-52 bg-surface border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 {$sidebarOpen ? 'translate-x-0' : '-translate-x-full'}" role="navigation">
   <div class="flex flex-col h-full">
     <!-- Updated header with settings icon and new chat button -->
     <div class="flex items-center justify-between p-4 border-b border-white/10">
