@@ -85,7 +85,7 @@ export const singleConversation:Conversations = {
 		{
 			role: 'user',
 			content: {
-				message: 'new Single',
+				message: 'give me a button component in tailwind css',
 				html: ''
 			}
 		},
@@ -94,7 +94,7 @@ export const singleConversation:Conversations = {
 			content: {
 				message: `<p>To deploy Payload CMS on Vercel, follow these steps:</p>\n<ol>\n  <li><b>Create a Vercel Account</b> at <a href='https://vercel.com/signup' target='_blank'>vercel.com</a></li>\n  <li><b>Install Vercel CLI</b>:</li>\n  <pre><code class='language-bash'>npm install -g vercel</code></pre>\n  <li><b>Initialize Your Project</b> in your project directory.</li>\n  <li><b>Configure Environment Variables</b> in the Vercel dashboard.</li>\n  <li><b>Create a <code>vercel.json</code> file</b>:</li>\n  <pre><code class='language-json'>{\n  \"version\": 2,\n  \"builds\": [{\"src\": \"package.json\", \"use\": \"@vercel/node\"}],\n  \"routes\": [{\"src\": \"/(.*)\", \"dest\": \"/index.js\"}]\n}</code></pre>\n  <li><b>Deploy Your Project</b>:</li>\n  <pre><code class='language-bash'>vercel</code></pre>\n  <li><b>Access Your Site</b> using the provided URL.</li>\n</ol>`,
 				html: `<button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-									Single
+									click me 1
 								</button>`
 			}
 		}

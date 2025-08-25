@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { API_BASE_URL } from '$lib/API/requests.js';
 	import type { Conversations } from '../../constants/storeTypes.js';
 	import { singleConversation } from '../../mock/data.js';
 	import {
@@ -15,7 +16,7 @@
 	function sendMessage() {
 		if (messageInput.trim()) {
 			isLoading = true;
-			fetch('https://jsonplaceholder.typicode.com/chat', {
+			fetch(`${API_BASE_URL}/chat`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

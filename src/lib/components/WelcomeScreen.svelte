@@ -14,12 +14,13 @@
 				}
 			} catch (error) {}
 		}
+		inputValue='';
 	}
 
-	function handleKeydown(event: KeyboardEvent) {
+	async function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter' && !event.shiftKey) {
 			event.preventDefault();
-			handleSubmit();
+			await handleSubmit();
 		}
 	}
 </script>

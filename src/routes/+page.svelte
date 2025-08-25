@@ -6,6 +6,7 @@
 	import WelcomeScreen from '../lib/components/WelcomeScreen.svelte';
 	import { onMount } from 'svelte';
 	import type { ChatItem } from '../constants/storeTypes.js';
+	import { API_BASE_URL } from '$lib/API/requests.js';
 
 	function toggleSidebar() {
 		sidebarOpen.update((n) => !n);
@@ -14,7 +15,7 @@
 	// let chats = $state("initdata");
 
 	onMount(async () => {
-		await fetch('https://jsonplaceholder.typicode.com/posts/1')
+		await fetch(`${API_BASE_URL}/posts/1`)
 			.then((res) => res.json())
 			.then((data: ChatItem[]) => {
 				console.log('apidata =>', data);
