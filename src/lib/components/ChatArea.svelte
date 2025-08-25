@@ -1,15 +1,13 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import type { Conversations } from '../../constants/storeTypes.js';
+	import { singleConversation } from '../../mock/data.js';
 	import {
 		activeChatID,
 		activeConversation,
 		activeConversations,
-		activeMaxVersion,
 		activeVersion,
 		chats
 	} from '../stores.js';
-	import { singleConversation } from '../../mock/data.js';
-	import type { Conversations } from '../../constants/storeTypes.js';
 
 	let messageInput = $state('');
 	let isLoading = $state(false);
@@ -17,12 +15,12 @@
 	function sendMessage() {
 		if (messageInput.trim()) {
 			isLoading = true;
-			fetch('https://jsonplaceholder.typicode.com/newChat', {
+			fetch('https://jsonplaceholder.typicode.com/chat', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ message: messageInput })
+				body: JSON.stringify({ message: messageInput, id:$activeChatID })
 			})
 				.then((response) => response.json())
 				.then((data: Conversations) => {
@@ -40,7 +38,7 @@
 							)
 						);
 
-						//this is for set latest chat in UI
+						//this is for set latest chat in the preview
 						newActiveChat && activeVersion.set(newActiveChat?.length - 1);
 					}
 				})
@@ -64,7 +62,7 @@
 </script>
 
 <div class="flex h-full flex-col">
-	<!-- Messages -->
+	<!-- Messages threads -->
 	<div class="flex-1 space-y-2 overflow-y-auto p-4">
 		{#if isLoading}
 			<!-- Skeleton loader -->
@@ -77,7 +75,6 @@
 			{console.log($activeConversation)}
 			{#each $activeConversation ?? [] as conversation}
 				<div class="flex {conversation.role === 'user' ? 'justify-end' : 'justify-start'}">
-					<!-- Updated user message color to use teal primary color -->
 					<article
 						class="prose rounded-lg px-4 py-2 prose-a:text-green-500 prose-code:text-white {conversation.role ===
 						'user'
@@ -85,10 +82,6 @@
 							: ' !text-white'}"
 					>
 						{@html conversation.content.message}
-
-						<!-- <article class="prose lg:prose-xl">
-							{@html conversation.content.message}
-						</article> -->
 					</article>
 				</div>
 			{/each}

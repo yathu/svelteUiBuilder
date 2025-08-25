@@ -7,16 +7,14 @@
   }
 
   function selectChat(chatId:number) {
-
     activeVersion.set(0);
     activeChatID.set(chatId);
+    //TODO: this nees to be improve
     ($activeConversations && activeVersion.set($activeConversations?.length - 1))
-    showWelcomeScreen.set(false);
   }
 
   function newChat() {
     activeChatID.set(null);
-    showWelcomeScreen.set(true);
   }
 
   function closeSidebar() {
@@ -32,10 +30,9 @@
 <!-- Sidebar -->
 <div class="fixed inset-y-0 left-0 z-50 w-64 min-w-52 bg-surface border-r border-white/10 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 {$sidebarOpen ? 'translate-x-0' : '-translate-x-full'}" role="navigation">
   <div class="flex flex-col h-full">
-    <!-- Updated header with settings icon and new chat button -->
+    <!-- setting button section -->
     <div class="flex items-center justify-between p-4 border-b border-white/10">
       <div class="flex items-center gap-3 w-full">
-        <!-- Settings Icon -->
         <button 
           class="p-2 rounded"
           onclick={toggleSettings}

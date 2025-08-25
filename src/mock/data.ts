@@ -1,4 +1,4 @@
-import type { ChatItem, Conversation, Conversations } from '../constants/storeTypes';
+import type { ChatItem, Conversations } from '../constants/storeTypes';
 
 export const chats: ChatItem[] = [
 	{
@@ -99,4 +99,10 @@ export const singleConversation:Conversations = {
 			}
 		}
 	]
+};
+
+export const newChatItem: ChatItem = {
+	id: Date.now(),
+	name: 'New Chat',
+	conversations: [singleConversation]
 };

@@ -1,5 +1,5 @@
 import { delay, http, HttpResponse } from 'msw';
-import { chats, singleConversation } from './data';
+import { chats, newChatItem, singleConversation } from './data';
 import type { ChatItem, Conversations } from '../constants/storeTypes';
 
 export const handlers = [
@@ -11,9 +11,15 @@ export const handlers = [
 		return HttpResponse.json(chats);
 	}),
 
-	http.post<never, never, Conversations>('https://jsonplaceholder.typicode.com/newChat', async ({ request }) => {
+	http.post<never, never, Conversations>('https://jsonplaceholder.typicode.com/chat', async ({ request }) => {
 		const parms = await request.json();
 		console.log('parms=>', parms);
 		return HttpResponse.json(singleConversation, { status: 200 });
+	}),
+
+	http.post<never, never, ChatItem>('https://jsonplaceholder.typicode.com/newChat', async ({ request }) => {
+		const parms = await request.json();
+		console.log('parms=>', parms);
+		return HttpResponse.json(newChatItem, { status: 200 });
 	}),
 ];
