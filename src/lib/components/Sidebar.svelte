@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sidebarOpen, settingsOpen, chats, activeChatID, showWelcomeScreen } from '../stores.js';
+  import { sidebarOpen, settingsOpen, chats, activeChatID, showWelcomeScreen, activeVersion, activeMaxVersion, activeConversations } from '../stores.js';
   import Settings from './Settings.svelte';
 
   function toggleSettings() {
@@ -7,25 +7,16 @@
   }
 
   function selectChat(chatId:number) {
+
+    activeVersion.set(0);
     activeChatID.set(chatId);
+    ($activeConversations && activeVersion.set($activeConversations?.length - 1))
     showWelcomeScreen.set(false);
-    chats.update(chatList => 
-      chatList.map(chat => ({
-        ...chat,
-        active: chat.id === chatId
-      }))
-    );
   }
 
   function newChat() {
     activeChatID.set(null);
     showWelcomeScreen.set(true);
-    chats.update(chatList => 
-      chatList.map(chat => ({
-        ...chat,
-        active: false
-      }))
-    );
   }
 
   function closeSidebar() {
@@ -86,11 +77,11 @@
 
     <!-- Chat List -->
     <div class="flex-1 p-4">
-      <h2 class="text-sm font-medium text-secondary mb-3">Chats</h2>
+      <h2 class="text-sm font-medium text-white/30 mb-3">Chats</h2>
       <div class="space-y-2">
         {#each $chats as chat}
           <button 
-            class="w-full text-left p-2 rounded hover:bg-white/5 transition-colors {chat.active ? 'bg-white/5 text-primary' : 'text-secondary'}"
+            class="w-full text-left p-2 rounded hover:bg-white/5 transition-colors {chat.id == $activeChatID ? 'bg-white/5 text-primary' : 'text-secondary'}"
             onclick={() => selectChat(chat.id)}
             aria-label="Select chat: {chat.name}"
           >

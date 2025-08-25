@@ -11,9 +11,22 @@ export const chats = writable<ChatItem[]>([
 ]);
 export const messages = writable([]);
 export const activeChatID = writable<number | null>();
-export const activeConversation = derived([chats, activeChatID], ([$chats, $activeChatID]) =>
-	$chats.find((item) => item.id === $activeChatID)?.conversations
-);
-
 export const showWelcomeScreen = writable(true);
-export const generatedCode = derived(activeConversation, ($activeConversation) => $activeConversation?.find((item)=> item.role == 'assistant')?.content?.html || '');
+
+export const activeConversations = derived([chats, activeChatID], ([$chats, $activeChatID,]) =>
+	$chats.find((item) => item.id === $activeChatID)?.conversations);
+
+export const activeMaxVersion = derived(activeConversations, ($activeConversations) => $activeConversations ? $activeConversations?.length - 1 : 0);
+
+export const activeVersion = writable(0);
+
+// activeMaxVersion.subscribe((max) => {
+//   activeVersion.update((v) => (v > max ? max : v));
+// });
+
+export const activeConversation = derived([activeConversations, activeVersion], ([$activeConversations, $activeVersion]) =>
+	$activeConversations ? $activeConversations[$activeVersion].conversation : null);
+
+export const generatedCode = derived([activeConversation] , ([$activeConversation]) => {
+	return $activeConversation ? $activeConversation.find(item => item.role == 'assistant')?.content.html : '';
+})

@@ -1,28 +1,57 @@
 <script lang="ts">
-	import type { ChatItem, Conversation } from '../../constants/storeTypes.js';
-	import { activeConversation, activeChatID, chats, messages } from '../stores.js';
+	import { onMount } from 'svelte';
+	import {
+		activeChatID,
+		activeConversation,
+		activeConversations,
+		activeMaxVersion,
+		activeVersion,
+		chats
+	} from '../stores.js';
+	import { singleConversation } from '../../mock/data.js';
+	import type { Conversations } from '../../constants/storeTypes.js';
 
 	let messageInput = $state('');
+	let isLoading = $state(false);
 
 	function sendMessage() {
 		if (messageInput.trim()) {
-			// messages.update((msgs) => [
-			// 	...msgs,
-			// 	{ id: Date.now(), type: 'user', content: messageInput.trim() }
-			// ]);
-			messageInput = '';
+			isLoading = true;
+			fetch('https://jsonplaceholder.typicode.com/newChat', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ message: messageInput })
+			})
+				.then((response) => response.json())
+				.then((data: Conversations) => {
+					console.log('Server response:', data);
 
-			// // Simulate assistant response
-			// setTimeout(() => {
-			// 	messages.update((msgs) => [
-			// 		...msgs,
-			// 		{
-			// 			id: Date.now() + 1,
-			// 			type: 'assistant',
-			// 			content: 'I understand your request. Let me help you with that.'
-			// 		}
-			// 	]);
-			// }, 1000);
+					if (data) {
+						const newActiveChat = [...($activeConversations ?? []), singleConversation];
+						console.log('newActiveChat==>', newActiveChat);
+
+						chats.update((chat) =>
+							chat.map((item) =>
+								item.id == $activeChatID
+									? { ...item, conversations: [...(item.conversations ?? []), singleConversation] }
+									: item
+							)
+						);
+
+						//this is for set latest chat in UI
+						newActiveChat && activeVersion.set(newActiveChat?.length - 1);
+					}
+				})
+				.catch((error) => {
+					console.error('Error sending message:', error);
+				})
+				.finally(() => {
+					isLoading = false;
+				});
+
+			messageInput = '';
 		}
 	}
 
@@ -37,26 +66,37 @@
 <div class="flex h-full flex-col">
 	<!-- Messages -->
 	<div class="flex-1 space-y-2 overflow-y-auto p-4">
-		{#each $activeConversation ?? [] as conversation}
-			<div class="flex {conversation.role === 'user' ? 'justify-end' : 'justify-start'}">
-				<!-- Updated user message color to use teal primary color -->
-				<article
-					class="prose prose-code:text-white prose-a:text-green-500 rounded-lg px-4 py-2 {conversation.role === 'user'
-						? 'max-w-xs bg-neutral-800 !text-white lg:max-w-md'
-						: ' !text-white'}"
-				>
-					{@html conversation.content.message}
-
-					<!-- <article class="prose lg:prose-xl">
-						{@html conversation.content.message}
-					</article> -->
-				</article>
+		{#if isLoading}
+			<!-- Skeleton loader -->
+			<div class="animate-pulse flex flex-col gap-2">
+				<div class="self-end w-2/3 max-w-xs lg:max-w-md h-6 bg-neutral-700 rounded-lg"></div>
+				<div class="self-start w-1/2 max-w-xs lg:max-w-md h-6 bg-neutral-800 rounded-lg"></div>
+				<div class="self-end w-1/3 max-w-xs lg:max-w-md h-6 bg-neutral-700 rounded-lg"></div>
 			</div>
-		{/each}
+		{:else}
+			{console.log($activeConversation)}
+			{#each $activeConversation ?? [] as conversation}
+				<div class="flex {conversation.role === 'user' ? 'justify-end' : 'justify-start'}">
+					<!-- Updated user message color to use teal primary color -->
+					<article
+						class="prose rounded-lg px-4 py-2 prose-a:text-green-500 prose-code:text-white {conversation.role ===
+						'user'
+							? 'max-w-xs bg-neutral-800 !text-white lg:max-w-md'
+							: ' !text-white'}"
+					>
+						{@html conversation.content.message}
+
+						<!-- <article class="prose lg:prose-xl">
+							{@html conversation.content.message}
+						</article> -->
+					</article>
+				</div>
+			{/each}
+		{/if}
 	</div>
 
 	<!-- Input Area -->
-	<div class="border-t border-gray-700 p-4 flex-1 max-h-22">
+	<div class="max-h-22 flex-1 border-t border-gray-700 p-4">
 		<div class="flex gap-2">
 			<input
 				type="text"
@@ -65,7 +105,9 @@
 				onkeydown={handleKeydown}
 				class="flex-1 rounded border border-gray-500 px-3 py-2 !outline-none"
 			/>
-			<button class="btn-primary" onclick={sendMessage}> Send </button>
+			<button class={messageInput ? 'opacity-100' : 'opacity-0'} onclick={sendMessage}>
+				Send
+			</button>
 		</div>
 	</div>
 </div>

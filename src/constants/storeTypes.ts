@@ -1,7 +1,12 @@
 export interface ChatItem {
 	id: number;
 	name: string;
-	conversations:Conversation[];
+	conversations:Conversations[];
+}
+
+export interface Conversations{
+	version: number;
+	conversation: Conversation[];
 }
 
 export interface Conversation {
